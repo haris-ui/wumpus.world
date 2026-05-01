@@ -1,8 +1,11 @@
+import os
 from flask import Flask, jsonify, request, render_template
-app = Flask(__name__, template_folder="../templates")
 import random
 from typing import Set, Tuple, List, Dict
-from api.kb import Clause, KnowledgeBase
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+template_dir = os.path.join(base_dir, 'templates')
+app = Flask(__name__, template_folder=template_dir)
+from .kb import Clause, KnowledgeBase
 
 class InferenceEngine:
     def __init__(self) -> None:
