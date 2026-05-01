@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- CRITICAL for mobile -->
     <title>Wumpus World AI</title>
     <style>
-        /* CRITICAL: Forces borders to draw inside the box so they don't break the CSS Grid */
         * { box-sizing: border-box; }
 
         body { 
@@ -14,15 +14,17 @@
             margin: 0; 
             padding: 30px; 
             display: flex; 
+            flex-direction: row; /* Side-by-side on PC */
             justify-content: center; 
-            align-items: flex-start; /* Stops the grid from stretching vertically */
+            align-items: flex-start; 
             gap: 40px; 
         }
         
         .sidebar { 
             background: #1e1e1e; 
             padding: 20px; 
-            width: 320px; 
+            width: 100%; 
+            max-width: 320px; 
             border: 2px solid #333; 
         }
         
@@ -39,7 +41,7 @@
         label { font-size: 14px; color: #aaa; }
         
         input { 
-            width: 50px; 
+            width: 60px; 
             padding: 6px; 
             background: #121212; 
             color: #fff; 
@@ -51,7 +53,7 @@
         button { 
             background: #333; 
             border: 1px solid #555; 
-            padding: 12px 15px; 
+            padding: 15px; /* Larger touch targets for mobile */
             color: white; 
             border-radius: 0; 
             cursor: pointer; 
@@ -72,15 +74,17 @@
         .grid-container { 
             display: grid; 
             gap: 2px; 
-            background: #444; /* Background acts as the grid lines */
+            background: #444; 
             padding: 2px; 
             border: 2px solid #555; 
-            height: fit-content; /* Stops the empty space at the bottom */
+            width: 100%;
+            max-width: 600px; /* Limits size on large screens */
+            height: fit-content; 
         }
         
         .cell { 
-            width: 80px; 
-            height: 80px; 
+            width: 100%; 
+            aspect-ratio: 1 / 1; /* Forces cells to be perfectly square */
             background: #1e1e1e; 
             display: flex; 
             align-items: center; 
@@ -89,12 +93,10 @@
         }
         
         .cell.visited { background: #2a2a2a; }
-        
-        /* Outline instead of Border prevents the cells from shifting */
         .cell.safe { 
             outline: 2px solid #4CAF50; 
             outline-offset: -2px; 
-            z-index: 1; /* Ensures outline draws over adjacent cells cleanly */
+            z-index: 1; 
         } 
         
         .percepts-box { 
@@ -118,11 +120,10 @@
             width: auto; 
             background: #222; 
             border-color: #444; 
-            font-size: 18px;
+            font-size: 20px;
         }
         .controls-grid button:hover { background: #555; }
         
-        /* Agent & Entity Alignment fixes */
         .agent, .hidden-entity { 
             position: absolute; 
             width: 100%; 
@@ -143,6 +144,19 @@
         .hidden-entity { opacity: 0; transition: opacity 0.2s; }
         .god-mode-active .hidden-entity { opacity: 0.4 !important; }
         .visited .hidden-entity { opacity: 1 !important; }
+
+        /* --- MOBILE RESPONSIVENESS --- */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column; /* Stack vertically */
+                align-items: center;
+                padding: 15px;
+                gap: 20px;
+            }
+            .sidebar {
+                max-width: 100%; /* Take full width on mobile */
+            }
+        }
     </style>
 </head>
 <body>
@@ -323,8 +337,8 @@
 
         function buildGridUI() {
             const container = document.getElementById('gridUI');
-            container.style.gridTemplateColumns = `repeat(${gridSize}, 80px)`;
-            container.style.gridTemplateRows = `repeat(${gridSize}, 80px)`;
+            // FIX: Replaced fixed '80px' with '1fr' to allow cells to resize dynamically
+            container.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
             container.innerHTML = '';
 
             for (let r = 0; r < gridSize; r++) {
