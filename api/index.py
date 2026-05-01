@@ -1,4 +1,4 @@
-app = Flask(__name__)
+app = Flask(__name__, template_folder="../templates")
 from flask import Flask, jsonify, request, render_template
 import random
 from typing import Set, Tuple, List, Dict
