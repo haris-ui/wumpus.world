@@ -2,9 +2,15 @@ import os
 from flask import Flask, jsonify, request, render_template
 import random
 from typing import Set, Tuple, List, Dict
+
+# 1. Use OS module to build an absolute path to the templates folder
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 template_dir = os.path.join(base_dir, 'templates')
+
+# 2. Initialize Flask with the bulletproof absolute path
 app = Flask(__name__, template_folder=template_dir)
+
+# 3. Import KB (using a relative import so Vercel finds it in the same folder)
 from .kb import Clause, KnowledgeBase
 
 class InferenceEngine:
