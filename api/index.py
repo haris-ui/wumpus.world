@@ -180,5 +180,5 @@ def move_route() -> dict:
     result, status_code = move_agent(action)
     return jsonify(result), status_code
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     app.run(debug=True)
