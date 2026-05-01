@@ -1,5 +1,5 @@
-app = Flask(__name__, template_folder="../templates")
 from flask import Flask, jsonify, request, render_template
+app = Flask(__name__, template_folder="../templates")
 import random
 from typing import Set, Tuple, List, Dict
 from api.kb import Clause, KnowledgeBase
@@ -179,6 +179,3 @@ def move_route() -> dict:
     action = request.get_json().get("action")
     result, status_code = move_agent(action)
     return jsonify(result), status_code
-
-# if __name__ == "__main__":
-    app.run(debug=True)
