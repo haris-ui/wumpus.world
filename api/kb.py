@@ -1,4 +1,4 @@
-# Authors: Muhammad Haris Zubair (F24-0608), Muhammad Abdullah (F24-0613)
+# Authors: Muhammad Haris Zubair (F24-0608)
 # Section: BCS - 4F
 # Wumpus World Knowledge Base with Propositional Logic
 
